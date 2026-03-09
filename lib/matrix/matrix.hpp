@@ -20,11 +20,16 @@ public:
     std::vector<std::vector<DataT>> result(nrows,
                                            std::vector<DataT>(m_ncolumns));
 
+    auto row = [&](SizeT i) {
+      return std::views::iota(m_row_index[i], m_row_index[i + 1]) |
+             std::views::transform([this](SizeT j) {
+               return std::pair{m_col_index[j], m_data[j]};
+             });
+    };
+
     for (auto i : std::ranges::iota_view{0U, nrows}) {
-      const auto row_start = m_row_index[i];
-      const auto row_end = m_row_index[i + 1];
-      for (auto j : std::ranges::iota_view{row_start, row_end}) {
-        result[i][m_col_index[j]] = m_data[j];
+      for (auto [col, val] : row(i)) {
+        result[i][col] = val;
       }
     }
 
