@@ -42,8 +42,8 @@ public:
 
   constexpr std::span<DataT> data() { return m_data; }
 
-  explicit constexpr compressed_sparse_row<DataT>(SizeT nnz, SizeT nrows,
-                                                  SizeT ncolumns)
+  explicit constexpr compressed_sparse_row(SizeT nnz, SizeT nrows,
+                                           SizeT ncolumns)
       : m_col_index(std::vector<SizeT>(nnz)), m_data(std::vector<DataT>(nnz)),
         m_row_index(std::vector<SizeT>(nrows + 1)), m_ncolumns(ncolumns) {}
 };
