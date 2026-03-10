@@ -4,13 +4,21 @@ project(FVM)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_COMPILER clang++)
 
-add_subdirectory(lib/matrix)
+enable_testing()
 
 add_executable(main src/main.cpp)
 
-target_link_libraries(main PRIVATE matrix)
+add_subdirectory(lib/common)
+add_subdirectory(lib/matrix)
 
-enable_testing()
-add_subdirectory(lib/matrix/tests)
+target_link_libraries(main PRIVATE matrix common)
+
+include(FetchContent)
+
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+)
+
+FetchContent_MakeAvailable(googletest)
